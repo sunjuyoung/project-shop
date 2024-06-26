@@ -1,10 +1,14 @@
 package com.project.shop.customer.entity;
 
 import com.project.shop.customer.entity.enums.Grade;
+import com.project.shop.customer.entity.enums.Roles;
 import com.project.shop.customer.vo.Address;
 import com.project.shop.global.domain.Images;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -23,6 +27,9 @@ public class Customer {
     @Column(name = "password", nullable = false)
     private String password;
 
+    @Column(name = "nickname", nullable = false)
+    private String nickname;
+
     @Embedded
     private Address address;
 
@@ -32,9 +39,24 @@ public class Customer {
     @Enumerated(EnumType.STRING)
     private Grade grade;
 
+    private boolean isSocial;
+
+    @ElementCollection(fetch = FetchType.LAZY)
+    @Builder.Default
+    private List<Roles> roleList = new ArrayList<>();
+
+
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "profile_image_id", referencedColumnName = "id")
     private Images profileImage;
 
+
+    public void changeGrade(Grade grade){
+        this.grade = grade;
+    }
+
+    public void addRoles(Roles role){
+        roleList.add(role);
+    }
 }
