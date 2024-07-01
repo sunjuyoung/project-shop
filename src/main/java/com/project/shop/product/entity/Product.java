@@ -1,6 +1,7 @@
 package com.project.shop.product.entity;
 
 import com.project.shop.category.entity.Category;
+import com.project.shop.global.domain.BaseTime;
 import com.project.shop.global.domain.Images;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -16,7 +17,7 @@ import java.util.Set;
 @Builder
 @Entity
 @Table(name = "product")
-public class Product {
+public class Product extends BaseTime {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,6 +32,10 @@ public class Product {
     @Column(name = "price", nullable = false)
     private int price;
 
+
+    @Column(name = "discount_rate")
+    private int discountRate;
+
     @Column(nullable = false)
     private int quantity;
 
@@ -39,6 +44,8 @@ public class Product {
     private Category category;
 
 
+    @Builder.Default
     @OneToMany
+    @JoinColumn(name = "images_id")
     private Set<Images> images = new HashSet<>();
 }
